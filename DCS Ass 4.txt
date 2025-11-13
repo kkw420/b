@@ -1,0 +1,166 @@
+RING ALORITHM
+#include<vector>
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<thread>
+
+using namespace std;
+
+class ringAlgorithm{
+    int currentProcess;
+    vector<int>processes;
+    int leader;
+    public:
+        ringAlgorithm(int num)
+        {
+            for(int i = 0; i<num; i++)
+            {
+                processes.push_back(i);
+            }
+            leader = -1;
+            currentProcess = 0;
+        }
+        
+        void start()
+        {
+            cout<<"Starting Algorithm..."<<endl;
+            
+            for(int i = 0; i<processes.size(); i++)
+            {
+                currentProcess = (currentProcess+1)%processes.size();
+                cout<<"Process "<<currentProcess<<" has the token"<<endl;
+            }
+            
+            leader = *max_element(processes.begin(), processes.end());
+            
+            cout<<"Leader is: "<<leader<<endl;
+        }
+};
+
+int main()
+{
+    ringAlgorithm r(5);
+    r.start();
+}
+
+
+
+
+
+BULLY ALGORITHM
+#include<vector>
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<thread>
+
+using namespace std;
+
+class bullyAlgorithm{
+    int currentProcess;
+    vector<int>processes;
+    int leader;
+    public:
+        bullyAlgorithm(int num)
+        {
+            for(int i = 0; i<num; i++)
+            {
+                processes.push_back(i);
+            }
+            leader = -1;
+            currentProcess = 0;
+        }
+        
+        void start()
+        {
+            cout<<"Starting Algorithm..."<<endl;
+            
+            leader = *max_element(processes.begin(), processes.end());
+            
+            cout<<"Leader is: "<<leader<<endl;
+            
+            for (int i = 0; i < processes.size(); ++i) {
+            if (processes[i] != leader) {
+                cout << "Process " << processes[i] << " acknowledges Process " << leader << " as the leader." << endl;
+            }
+        }
+        }
+};
+
+int main()
+{
+    bullyAlgorithm r(5);
+    r.start();
+}
+
+
+
+
+
+BERKLEY’S ALGORITHM
+#include <iostream>
+#include <vector>
+#include <numeric>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+class BerkleyAlgorithm {
+    vector<int> processes;
+    vector<int> localTime;
+    vector<int> offset;
+    int coordinatorId, coordinatorTime;
+
+public:
+    BerkleyAlgorithm(int num, int coordinator) {
+        srand(time(0)); // Seed random number generator
+
+        for (int i = 0; i < num; i++) {
+            processes.push_back(i);
+            localTime.push_back(rand() % 100); // Random time between 0 and 99
+        }
+
+        offset.resize(num); // Initialize offset vector
+
+        coordinatorId = coordinator;
+        coordinatorTime = localTime[coordinator];
+    }
+
+    void sendTime() {
+        cout << "Coordinator's time is: " << coordinatorTime << endl;
+
+        for (int i = 0; i < processes.size(); i++) {
+            offset[i] = coordinatorTime - localTime[i];
+        }
+    }
+
+   void adjustTime() {
+    int sum = accumulate(offset.begin(), offset.end(), 0);
+    int averageOffset = sum / offset.size();
+
+    for (int i = 0; i < processes.size(); ++i) {
+        if (processes[i] != coordinatorId) {
+            localTime[i] += offset[i] - averageOffset;
+            cout << "Process " << processes[i] << " adjusts its clock to: " << localTime[i] << endl;
+        }
+    }
+}
+
+    void print() {
+        cout << "\nFinal clock times:\n";
+        for (int i = 0; i < processes.size(); i++) {
+            cout << "Process " << processes[i] << " has time set to: " << localTime[i] << endl;
+        }
+    }
+};
+
+int main() {
+    BerkleyAlgorithm b(5, 0); // 5 processes, coordinator is process 0
+    b.sendTime();
+    b.adjustTime();
+    b.print();
+
+    return 0;
+}

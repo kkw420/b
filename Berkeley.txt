@@ -1,0 +1,42 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+import java.util.Scanner;
+
+public class BerkeleyUser {
+   public BerkeleyUser() {
+   }
+
+   public static void main(String[] var0) {
+      Scanner var1 = new Scanner(System.in);
+      System.out.print("Enter number of clocks: ");
+      int var2 = var1.nextInt();
+      double[] var3 = new double[var2];
+      System.out.println("Enter clock times:");
+
+      for(int var4 = 0; var4 < var2; ++var4) {
+         var3[var4] = var1.nextDouble();
+      }
+
+      double var13 = var3[0];
+      double var6 = 0.0;
+      double[] var8 = var3;
+      int var9 = var3.length;
+
+      int var10;
+      for(var10 = 0; var10 < var9; ++var10) {
+         double var11 = var8[var10];
+         var6 += var11 - var13;
+      }
+
+      double var14 = var6 / (double)var2;
+      System.out.println("\nAverage Difference: " + var14);
+      System.out.println("Synchronized Clocks:");
+
+      for(var10 = 0; var10 < var2; ++var10) {
+         System.out.println("Clock " + (var10 + 1) + ": " + (var3[var10] - var14));
+      }
+
+      var1.close();
+   }
+}
+
+
